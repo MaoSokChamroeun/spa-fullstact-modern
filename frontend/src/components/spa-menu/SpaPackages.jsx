@@ -4,12 +4,14 @@ import useGetServiceCategory from "../../hooks/adminHook/getServiceById/useGetSe
 import contentMap from "../api/contentMap";
 import { useLang } from "../../components/context/LanguageContext"; // ១. Import useLang
 import { useTranslation } from "react-i18next"; // ២. Import useTranslation សម្រាប់ Static text
+import Loading from "../Loading";
 
 const SpaPackages = ({ categorySlug }) => {
   const { lang } = useLang(); // ៣. ទាញយកភាសាដែលកំពុងប្រើ (kh, en, ឬ ch)
   const { t } = useTranslation();
+
   
-  const { servicesCategory = [] } = useGetServiceCategory(categorySlug);
+  const { servicesCategory = [] , loading } = useGetServiceCategory(categorySlug);
 
   const activePage = contentMap[categorySlug] || {
     title: "Spa Services",
@@ -29,16 +31,17 @@ const SpaPackages = ({ categorySlug }) => {
 
         <div className="mt-10 max-w-7xl mx-auto px-4">
           <h1 className="text-center text-[35px] font-extrabold uppercase tracking-wide">
-             {/* បើក្នុង contentMap មានបែងចែកភាសាដែរ អាចប្រើ activePage.title[lang] */}
+            
             {activePage.title}
           </h1>
           <p className="text-center mt-4 text-gray-600 max-w-2xl mx-auto">
-            {/* ប្រើ t() សម្រាប់ពាក្យថេរដែលបានកំណត់ក្នុង i18n.js */}
+      
             {t('experience_msg')} {activePage.title}. {t('rejuvenate_msg')}
           </p>
 
           <div className="max-w-7xl mx-auto p-6 space-y-6">
-            {servicesCategory?.data && servicesCategory.data.length > 0 ? (
+            {loading && <Loading />}
+            {!loading && servicesCategory?.data && servicesCategory.data.length > 0 ? (
               servicesCategory.data.map((item, index) => (
                 <div
                   key={item._id || item.id || index}
@@ -55,12 +58,12 @@ const SpaPackages = ({ categorySlug }) => {
                   <div className="md:col-span-1 p-6 flex flex-col justify-between">
                     <div>
                       <h2 className="text-2xl font-semibold text-gray-800">
-                        {/* ៤. បង្ហាញ Title តាមភាសាដែលបានរើស */}
+     
                         {item.title?.[lang] || item.title?.en}
                       </h2>
 
                       <p className="mt-3 text-gray-600 text-sm leading-relaxed line-clamp-4">
-                        {/* ៥. បង្ហាញ Description តាមភាសាដែលបានរើស */}
+                   
                         {item.description?.[lang] || item.description?.en}
                       </p>
 
@@ -91,7 +94,7 @@ const SpaPackages = ({ categorySlug }) => {
                       {item.duration} {t('minutes')}
                     </p>
 
-                    <button className="px-8 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium">
+                    <button className="px-8 py-3 cursor-pointer bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium">
                       {t('book_now')}
                     </button>
                   </div>

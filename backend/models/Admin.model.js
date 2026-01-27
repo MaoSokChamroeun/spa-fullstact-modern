@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-
 const adminSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -13,22 +11,22 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: [true, 'email is required'],
         unique: true,
-        trim: true
+        trim: true,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email address']
     },
     password: {
         type: String,
         required: [true, 'Password is required'],
         minLength: [8, 'Password must be at least 8 characters'],
         select: false 
+    },
+    role : {
+        type : String,
+        enum : ["admin", "staff"],
+        required : [true , 'Role are required']
     }
 }, { timestamps: true });
 
-adminSchema.pre('save', async function () {
-    if (!this.isModified('password')) return;
-
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-});
 
 const AdminModel = mongoose.model('Admin', adminSchema);
 module.exports = AdminModel;

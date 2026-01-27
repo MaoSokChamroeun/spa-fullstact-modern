@@ -1,9 +1,18 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import HeroBar from "./HeroBar";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const Dashboard = () => {
 
+const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
   return (
     <div className="w-full">
       <div className="flex gap-2">

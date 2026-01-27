@@ -1,13 +1,13 @@
-import React from 'react'
-import getBanners from '../../hooks/adminHook/banner/getBanners';
-import Sidebar from '../Sidebar'
-import HeroBar from '../HeroBar'
-import { Link } from 'react-router-dom'
-import Loading from '../Loading'
-import useDeleteBanner from '../../hooks/adminHook/banner/useDeleteBanner';
+import React from "react";
+import getBanners from "../../hooks/adminHook/banner/getBanners";
+import Sidebar from "../Sidebar";
+import HeroBar from "../HeroBar";
+import { Link } from "react-router-dom";
+import Loading from "../Loading";
+import useDeleteBanner from "../../hooks/adminHook/banner/useDeleteBanner";
 const ShowBanner = () => {
-    const {banners , getAllBanners} = getBanners();
-    const {deleteBanner, loading , isDeleting} = useDeleteBanner();
+  const { banners, getAllBanners } = getBanners();
+  const { deleteBanner, loading, isDeleting } = useDeleteBanner();
   return (
     <div className="flex bg-gray-50 min-h-screen">
       <Sidebar />
@@ -66,10 +66,14 @@ const ShowBanner = () => {
                           <img
                             src={`http://localhost:5000/public/banners/${item.image}`}
                             alt={item.title}
-                            className="w-40 h-40 object-cover rounded-md border border-gray-200"
+                            className="w-40 h-40 object-cover rounded-md"
+                            onError={(e) => {
+                              e.target.src =
+                                "https://via.placeholder.com/150?text=No+Image";
+                            }}
                           />
                         </td>
-                        
+
                         <td className="px-6 py-4 text-center">
                           <div className="flex justify-center gap-3">
                             <button
@@ -142,7 +146,7 @@ const ShowBanner = () => {
         </div>
       </HeroBar>
     </div>
-  )
-}
+  );
+};
 
-export default ShowBanner
+export default ShowBanner;

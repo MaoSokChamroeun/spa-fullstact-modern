@@ -1,35 +1,39 @@
-const dotenv = require('dotenv');
-dotenv.config({path : './config.env'})
-const mongoose = require('mongoose');
-const AdminModel = require('./models/Admin.model')
-const seedAdmin = async () => {
-    try {    
-        // 1. Connect to Database
-        await mongoose.connect(process.env.DATABASE_URL);
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
+const connectionDB = require("./config/db");
+const AdminModel = require("./models/Admin.model");
+const { bcryptPashash } = require("./utils/bcrypt.util");
 
-        // 2. Check for existing admin
-        const adminExited = await AdminModel.findOne({ email: 'maosokchomroeun@gmail.com' });
-        
-        if (!adminExited) {
-            const admin = new AdminModel({
-                username: 'maosokchomroeun',
-                email: 'maosokchomroeun@gmail.com',
-                password: 'adminchomroeun2004'
-            });
-            
-            await admin.save();
-            console.log('✅ Admin account seeded successfully!');
-        } else {
-            console.log('ℹ️ Admin already exists.');
-        }
+const run = async () => {
+  try {
+    await connectionDB();
+    const existSuper = await AdminModel.findOne({
+      email: process.env.SUPER_EMAIL,
+    });
 
-    } catch (error) {
-        console.error('❌ Seeding Error:', error.message);
-    } finally {
-       
-        mongoose.connection.close();
-        process.exit();
+    if (!existSuper) {
+      console.log("Super admin not found, creating...");
+      const password = process.env.SUPER_PASSWORD;
+      const hashedPassword = await bcryptPashash(password);
+
+      const data = {
+        username: process.env.SUPER_USER,
+        email: process.env.SUPER_EMAIL, 
+        password: hashedPassword,   
+        role: "admin",  
+      };
+
+      await AdminModel.create(data);
+      console.log("Seeding success: Super admin created.");
+    } else {
+      console.log("Seeding skipped: Super admin already exists.");
     }
+
+    process.exit(0);
+  } catch (error) {
+    console.error("Seeding failed:", error);
+    process.exit(1);
+  }
 };
 
-seedAdmin();
+run();

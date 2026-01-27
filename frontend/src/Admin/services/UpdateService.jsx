@@ -170,7 +170,7 @@ const UpdateService = () => {
     preview,
     navigate,
   } = useUpdateService()
-
+console.log("Category", categories)
   return (
     <div className="flex bg-gray-50 min-h-screen">
       <Sidebar />

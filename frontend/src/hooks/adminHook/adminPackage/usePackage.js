@@ -8,11 +8,15 @@ const usePackage = () => {
     const getAllPackage = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('http://localhost:5000/api/package');
-            if (res.data.success) {
-                setPackage(res.data.data || []);
-                console.log(res.data.data)
+            const token = sessionStorage.getItem("token");
+        const res = await axios.get('http://localhost:5000/api/package', {
+            headers: {
+                Authorization: `Bearer ${token}` 
             }
+        });
+        if (res.data.success) {
+            setPackage(res.data.data || res.data.result);
+        }
         } catch (error) {
             console.error('Fetching error:', error);
         } finally {

@@ -9,7 +9,7 @@ import useDeleteService from "../../hooks/adminHook/adminService/useDeleteSeervi
 const ShowService = () => {
   const { services, loading, getAllService } = useService();
   const { deleteService, loading: isDeleting } = useDeleteService();
-
+console.log("Fetch services" , services)
   return (
     <div className="flex bg-gray-50 min-h-screen">
       <Sidebar />
@@ -54,13 +54,23 @@ const ShowService = () => {
                       <tr className="hover:bg-gray-50 transition-colors" key={item._id}>
                         <td className="px-6 py-4 text-sm text-gray-500">#{index + 1}</td>
                         <td className="px-6 py-4">
-                          <img
+                          {/* <img
                             src={`http://localhost:5000/public/services/${item.image}`}
                             alt={item.title?.en}
                             className="w-12 h-12 object-cover rounded-md border border-gray-200"
-                          />
+                          /> */}
+
+                          <img
+    // ត្រូវប្រាកដថា item.image មានតម្លៃ (មិនមែន undefined)
+    src={`http://localhost:5000/public/services/${item.image}`}
+    alt={item.title?.en || "service"}
+    className="w-12 h-12 object-cover rounded-md border border-gray-200"
+    // បន្ថែម onError ដើម្បីដាក់រូបភាពជំនួសពេលរក file មិនឃើញ
+    onError={(e) => {
+      e.target.src = "https://via.placeholder.com/150?text=No+Image";
+    }}
+  />
                         </td>
-                        {/* បង្ហាញចំណងជើងជា ២ ភាសាក្នុង Admin ដើម្បីឱ្យស្រួលចំណាំ */}
                         <td className="px-6 py-4 text-sm">
                           <div className="font-bold text-gray-900">{item.title?.kh}</div>
                           <div className="text-gray-500 italic text-xs">{item.title?.en}</div>

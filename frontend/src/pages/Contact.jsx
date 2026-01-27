@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Contact = () => {
   return (
     <Layout>
-      <div className="container-fluid px-4">
+      <div className="container-fluid px-4 mt-40">
         <div className="max-w-7xl mx-auto">
           <p
             className="text-center font-semibold mb-6 text-[35px]"

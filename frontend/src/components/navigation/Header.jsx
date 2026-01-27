@@ -8,10 +8,11 @@ const Header = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false); // Mobile Menu State
   const {categories} = useCategory();
   const mediaMenus = ["Video", "Gallery"];
+  console.log("this all category" , categories)
 
   return (
-    <header className="w-full relative z-[100] font-josefin">
-      <div className="h-8 hidden md:flex px-4 justify-end items-center w-full bg-gray-100 text-black fixed z-10 p-6">
+    <header className="w-full relative z-[100] font-josefin top-0">
+      <div className="h-8 hidden md:flex px-4 justify-end items-center w-full bg-gray-100 text-black fixed z-10 p-6 top-0">
         <div className="container mx-auto flex items-center justify-end gap-6 text-[12px] font-medium">
           <span>+855 070542973</span>
           <span className="uppercase tracking-wider">Phnom Penh, Cambodia</span>
@@ -20,7 +21,7 @@ const Header = () => {
       </div>
 
       {/* --- MAIN NAVBAR --- */}
-      <nav className="w-full h-16  bg-gray-900 text-white px-6 fixed mt-12">
+      <nav className="w-full h-16  bg-gray-900 text-white px-6 fixed mt-12 top-0">
         <div className="container mx-auto h-full flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center cursor-pointer">
@@ -140,7 +141,7 @@ const Header = () => {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4">
-            <button className="hidden sm:block bg-gray-100 text-[13px] hover:bg-[#9388b1] text-black px-7 py-2.5 rounded-full font-semibold transition-all">
+            <button className="hidden sm:block bg-gray-100 text-[13px] hover:bg-[#000000] hover:text-white cursor-pointer text-black px-7 py-2.5 rounded-full font-semibold transition-all">
               Book Now
             </button>
 

@@ -41,13 +41,24 @@ import axios from "axios";
 
 const useGetServiceCategory = (slug) => {
   const [servicesCategory, setServicesCategory] = useState([]);
-
+  const [loading , setLoading] = useState(false);
   useEffect(() => {
     const fetchServices = async () => {
+      setLoading(true)
       try {
-        const response = await axios.get(`http://localhost:5000/api/services/category/${slug}`);
-        console.log("Full API Response:", response.data);
-        setServicesCategory(response.data || []); 
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(`http://localhost:5000/api/services/category/${slug}`,{
+          headers : {
+            Authorization : `Bearer ${token}`
+          }
+        });
+        
+        if(response.data.success){
+          setLoading(false)
+            setServicesCategory(response.data); 
+            console.log(response.data)
+        }
+       
       } catch (error) {
         console.error("Fetch Error:", error);
         setServicesCategory([]);
@@ -59,7 +70,7 @@ const useGetServiceCategory = (slug) => {
     }
   }, [slug]); 
 
-  return { servicesCategory };
+  return { servicesCategory , loading};
 };
 
 export default useGetServiceCategory;

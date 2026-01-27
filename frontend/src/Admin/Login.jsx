@@ -9,19 +9,28 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/admin/login",{ email, password }
+        "http://localhost:5000/api/admin/login", { email, password }
       );
+
+      console.log("API Response:", res.data);
+
       if (res.data.success) {
-        // save token
-        sessionStorage.setItem("token", res.data.token);
-        // redirect
-        navigate("/admin/dashboard");
+        const token = res.data.result.token; 
+        
+        if (token) {
+          sessionStorage.setItem("token", token);
+          console.log('Success token' , token)
+          navigate("/admin/dashboard");
+        } else {
+          console.error("Token not found in response result");
+          alert("Login successful but token is missing!");
+        }
       } else {
         alert(res.data.message || "Login failed");
       }
