@@ -28,10 +28,15 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(limiter)
+// app.use(cors({
+//     origin: 'http://localhost:5173', // Must match your Vite URL exactly
+//     credentials: true,               // Allows cookies to be sent
+// }));
 app.use(cors({
-    origin: 'http://localhost:5173', // Must match your Vite URL exactly
-    credentials: true,               // Allows cookies to be sent
+  origin: true,
+  credentials: true,
 }));
+
 app.use(morgan("dev"))
 const db = require('./config/db');
 const AdminRouter = require('./routes/login.route');
